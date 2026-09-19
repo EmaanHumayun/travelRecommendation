@@ -3,13 +3,461 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Travel Recommendation</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+        }
+
+        /* ================= NAVBAR ================= */
+
+        .navbar {
+            background: #111827;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 35px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: bold;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 25px;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+        }
+
+        .nav-links a:hover {
+            color: #f59e0b;
+        }
+
+        .search-box {
+            display: flex;
+            gap: 8px;
+        }
+
+        .search-box input {
+            width: 220px;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            outline: none;
+        }
+
+        .search-box button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            color: white;
+        }
+
+        .search-btn {
+            background: #16a34a;
+        }
+
+        .reset-btn {
+            background: #dc2626;
+        }
+
+        /* ================= HOME ================= */
+
+        .hero {
+            min-height: 85vh;
+
+            background-image:
+                linear-gradient(
+                    rgba(0, 0, 0, 0.45),
+                    rgba(0, 0, 0, 0.45)
+                ),
+                url("https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1600&q=80");
+
+            background-size: cover;
+            background-position: center;
+
+            display: flex;
+            align-items: center;
+
+            padding: 60px;
+        }
+
+        .hero-content {
+            max-width: 650px;
+            color: white;
+        }
+
+        .hero-content h1 {
+            font-size: 60px;
+            margin-bottom: 20px;
+        }
+
+        .hero-content p {
+            font-size: 20px;
+            line-height: 1.7;
+            margin-bottom: 30px;
+        }
+
+        .book-btn {
+            background: #f59e0b;
+            color: white;
+            border: none;
+            padding: 14px 30px;
+            font-size: 17px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .book-btn:hover {
+            background: #d97706;
+        }
+
+        .social-links {
+            margin-top: 30px;
+            display: flex;
+            gap: 20px;
+        }
+
+        .social-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        /* ================= RESULTS ================= */
+
+        .results {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 25px;
+            padding: 50px 10%;
+        }
+
+        .recommendation-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .recommendation-card img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .recommendation-card h3 {
+            padding: 15px 20px 5px;
+            font-size: 24px;
+        }
+
+        .recommendation-card p {
+            padding: 0 20px 20px;
+            line-height: 1.6;
+        }
+
+        /* ================= ABOUT ================= */
+
+        .about-section {
+            padding: 80px 10%;
+            text-align: center;
+            background: #eeeeee;
+        }
+
+        .about-section h2 {
+            font-size: 40px;
+            margin-bottom: 20px;
+        }
+
+        .about-section > p {
+            max-width: 800px;
+            margin: 0 auto 40px;
+            line-height: 1.7;
+        }
+
+        .about-section h3 {
+            font-size: 28px;
+            margin-bottom: 25px;
+        }
+
+        .team-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+        }
+
+        .team-member {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .team-member h4 {
+            font-size: 22px;
+            margin-bottom: 10px;
+        }
+
+        /* ================= CONTACT ================= */
+
+        .contact-section {
+            padding: 80px 10%;
+            text-align: center;
+            background: white;
+        }
+
+        .contact-section h2 {
+            font-size: 40px;
+            margin-bottom: 30px;
+        }
+
+        #contactForm {
+            max-width: 600px;
+            margin: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        #contactForm input,
+        #contactForm textarea {
+            padding: 14px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+            font-family: Arial, sans-serif;
+        }
+
+        #contactForm button {
+            padding: 14px;
+            background: #111827;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        /* ================= MOBILE ================= */
+
+        @media (max-width: 900px) {
+
+            .navbar {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .search-box {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .hero {
+                padding: 30px;
+            }
+
+            .hero-content h1 {
+                font-size: 42px;
+            }
+
+            .team-container {
+                grid-template-columns: 1fr;
+            }
+
+            .results {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 
 <body>
 
-    <h1>Travel Recommendation</h1>
+    <!-- ================= NAVBAR ================= -->
+
+    <nav class="navbar">
+
+        <div class="logo">
+            Travel Explorer
+        </div>
+
+        <div class="nav-links">
+
+            <a href="#home">Home</a>
+
+            <a href="#about">About Us</a>
+
+            <a href="#contact">Contact Us</a>
+
+        </div>
+
+        <div class="search-box">
+
+            <input
+                type="text"
+                id="searchInput"
+                placeholder="Search beach, temple, country..."
+            >
+
+            <button
+                class="search-btn"
+                id="searchButton"
+            >
+                Search
+            </button>
+
+            <button
+                class="reset-btn"
+                id="resetButton"
+            >
+                Reset
+            </button>
+
+        </div>
+
+    </nav>
+
+
+    <!-- ================= HOME PAGE ================= -->
+
+    <section id="home" class="hero">
+
+        <div class="hero-content">
+
+            <h1>Explore The World</h1>
+
+            <p>
+                Discover beautiful destinations, amazing beaches,
+                historic temples, and fascinating countries.
+                Find your next travel destination with Travel Explorer.
+            </p>
+
+            <button class="book-btn">
+                Book Now
+            </button>
+
+            <div class="social-links">
+
+                <a href="#">Facebook</a>
+                <a href="#">Instagram</a>
+                <a href="#">Twitter</a>
+                <a href="#">YouTube</a>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= SEARCH RESULTS ================= -->
+
+    <div id="results" class="results"></div>
+
+
+    <!-- ================= ABOUT US ================= -->
+
+    <section id="about" class="about-section">
+
+        <h2>About Us</h2>
+
+        <p>
+            Travel Explorer is a travel recommendation platform
+            designed to help travelers discover beautiful destinations
+            around the world. Our goal is to make travel planning
+            simple, convenient, and inspiring.
+        </p>
+
+        <h3>Our Team</h3>
+
+        <div class="team-container">
+
+            <div class="team-member">
+                <h4>Emaan Humayun</h4>
+                <p>Project Manager</p>
+            </div>
+
+            <div class="team-member">
+                <h4>Sarah Khan</h4>
+                <p>Travel Consultant</p>
+            </div>
+
+            <div class="team-member">
+                <h4>Ahmed Ali</h4>
+                <p>Web Developer</p>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= CONTACT US ================= -->
+
+    <section id="contact" class="contact-section">
+
+        <h2>Contact Us</h2>
+
+        <form id="contactForm">
+
+            <input
+                type="text"
+                id="name"
+                placeholder="Enter your name"
+                required
+            >
+
+            <input
+                type="email"
+                id="email"
+                placeholder="Enter your email"
+                required
+            >
+
+            <textarea
+                id="message"
+                placeholder="Write your message"
+                rows="6"
+                required
+            ></textarea>
+
+            <button type="submit">
+                Submit
+            </button>
+
+        </form>
+
+    </section>
+
+
+    <!-- ================= JAVASCRIPT ================= -->
 
     <script src="travel_recommendation.js"></script>
+
 </body>
 </html>
